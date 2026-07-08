@@ -137,6 +137,7 @@ _version.py
 
 # C++ build directory
 _build/
+_deps/
 build-coverage/
 build-asan/
 

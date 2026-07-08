@@ -65,6 +65,19 @@ set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_subdirectory(src/core)
 
+# C++ CLI アプリケーション（コアエンジンをC++から直接呼び出す）
+# Pythonバインディングには不要なため、スタンドアロンビルド時のみ有効にする
+if(_TEMPLATE_STANDALONE)
+    set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/_deps" CACHE PATH
+        "FetchContent shared source cache" FORCE)
+    include(FetchContent)
+    include(cmake/local-or-fetch.cmake)
+    include(cmake/dependencies-cli.cmake)
+
+    add_subdirectory(src/config)
+    add_subdirectory(src/cli)
+endif()
+
 # Python バインディングはスタンドアロンまたは scikit-build-core 時のみ
 if(_TEMPLATE_STANDALONE OR SKBUILD)
     # SKBUILD時はscikit-build-coreがPythonパスを管理するため、.venvは不要

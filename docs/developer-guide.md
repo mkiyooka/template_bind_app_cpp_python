@@ -70,6 +70,24 @@ cmake --preset=rhel            # RHEL系
 cmake --build --preset=ubuntu-debug
 ```
 
+## C++ CLIアプリ
+
+Pythonバインディングとは独立に、C++処理エンジンをC++単体の実行ファイル `cmd` から呼び出せます。
+`pixi run build` を実行すると `build/cmd` が生成されます。
+
+```bash
+build/cmd --help
+build/cmd commit --message "hello" --all
+build/cmd -c config/example.toml log
+```
+
+`cmd` は `_TEMPLATE_STANDALONE` （このリポジトリを直接ビルドする場合）時のみビルドされます。
+CLI11・fmt・toml++・nlohmann/json・fkYAMLをFetchContentで取得するため、初回configure時に
+ダウンロードが発生します（`ext/` 配下にローカル配置すればそちらを優先して使用します）。
+
+- CLIオプション解析・設定ファイル読み込みの仕組み: `include/config/`、`src/config/`
+- サブコマンド定義: `src/cli/cli.cpp`
+
 ## 🛠️ 品質管理ツール
 
 ### pixi 経由（推奨）

@@ -1,0 +1,11 @@
+[commit]
+message = "example commit"
+all = true
+
+[fetch]
+remote = "upstream"
+prune = true
+
+[log]
+max_count = 5
+paths = ["src", "tests"]

@@ -2,6 +2,11 @@
 
 C++とPythonをnanobindでバインディングするテンプレートプロジェクトです。「main関数のようなコマンド単位をPythonから呼び出す」形式を採用しており、Python側はtyperでCLIオプションを解析して設定をConfig構造体に格納し、C++側の対応する実行関数へ渡すだけの役割を担います。
 
+同じC++処理エンジン（`src/core/commands/`）は、Pythonバインディングを介さずC++単体のCLIアプリ（`cmd`）からも
+直接呼び出せます。CLI11 + config-system（TOML/JSON/YAML設定ファイル読み込み）を使い、CLIオプションと設定ファイル
+の値をマージしてConfig構造体を組み立て、C++側の実行関数へ渡す点はPython版と同じ設計です。
+詳細は [C++ CLIアプリ](#c-cliアプリ) を参照してください。
+
 ## クイックスタート
 
 ```bash
@@ -45,6 +50,50 @@ git の commit / fetch / log 相当のダミー実装です。実際のgit操作
 2. `src/core/commands/` に `runXxx` の実装を追加する
 3. `src/bindings/nb_bindings.cpp` に `XxxConfig` と `runXxx` のバインディングを追加する
 4. `src/template_bind_cpp_python/cli.py` にtyperのサブコマンドを追加し、オプションから `XxxConfig` を組み立てて `runXxx` を呼び出す
+5. C++ CLI（`cmd`）からも呼び出す場合は、[C++ CLIアプリ](#c-cliアプリ) の手順に従って
+   `include/config/config_schema.hpp` にスキーマを追加し、`src/cli/cli.cpp` にサブコマンドを追加する
+
+## C++ CLIアプリ
+
+`src/core/commands/` のC++処理エンジンは、Pythonバインディングを介さずC++単体の実行ファイル `cmd` からも
+直接呼び出せます。CLI11でCLIオプションを解析し、config-system（TOML/JSON/YAML）で設定ファイルを読み込み、
+優先度（CLI引数 > 設定ファイル > デフォルト値）に従ってConfig構造体を解決してからC++の実行関数へ渡します。
+
+```bash
+# --path はCLI11オプションとして直接指定
+build/cmd commit --message "hello" --all
+build/cmd fetch --remote upstream --prune
+build/cmd log --max-count 3 --path src --path tests
+
+# 設定ファイル（TOML/JSON/YAML）を指定
+build/cmd -c config/example.toml commit
+
+# 設定ファイル + CLI引数で一部上書き（CLI引数が優先）
+build/cmd -c config/example.toml commit --message "override"
+```
+
+設定ファイルの例（TOML）:
+
+```toml
+[commit]
+message = "from config file"
+all = true
+
+[fetch]
+remote = "upstream"
+prune = true
+
+[log]
+max_count = 5
+paths = ["src", "tests"]
+```
+
+`cmd` はPythonバインディングと独立してビルドされ、`_TEMPLATE_STANDALONE` （このリポジトリを直接ビルドする場合）
+時のみ有効になります。他のCMakeプロジェクトから `FetchContent` で取り込まれた場合はビルドされません。
+
+- CLIエントリポイント: `src/cli/cli.cpp`、`src/cli/main.cpp`
+- 設定システム: `include/config/`、`src/config/`（`config_schema.hpp` にスキーマを1行追加するだけで
+  CLIオプション登録と設定ファイルの読み込みが両方有効になる）
 
 ### クロスプラットフォーム開発環境
 
@@ -72,6 +121,7 @@ pixi run clean         # ビルドディレクトリをクリーン
 
 - スタティックライブラリ: `build/src/core/libcxx_core.a`
 - Python バインディング (.so): `build/src/bindings/_nanobind_module*.so`
+- C++ CLIアプリ: `build/cmd`（[C++ CLIアプリ](#c-cliアプリ) を参照）
 
 ### サニタイザ / カバレッジ / Valgrind（Linux）
 

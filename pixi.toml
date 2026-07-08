@@ -1,5 +1,5 @@
 [workspace]
-name = "template-bind-cpp-python"
+name = "template-bind-app-cpp-python"
 version = "0.1.0"
 description = "C++ Development Environment"
 channels = ["conda-forge"]
