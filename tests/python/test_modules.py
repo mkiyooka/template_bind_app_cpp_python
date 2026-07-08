@@ -1,27 +1,56 @@
+import pytest
+
 import template_bind_cpp_python as mod  # ignore[import]
 
 
-def test_HammingDistanceCalculator() -> None:
-    """Test HammingDistanceCalculator class"""
-    calculator = mod.HammingDistanceCalculator([0x1248], [0x0000])
-    result = calculator.calculate()
-    assert result == 4
-    assert calculator.size() == 1
+def test_run_commit_succeeds() -> None:
+    """Test run_commit binding with a valid message"""
+    config = mod.CommitConfig()
+    config.message = "test commit"
+    config.amend = False
+    config.all = True
+
+    mod.run_commit(config)  # should not raise
 
 
-def test_add_functions() -> None:
-    """Test add function bindings"""
-    # Test integer addition
-    result_int = mod.add_integers(5, 3)
-    assert result_int == 8
+def test_run_commit_rejects_empty_message() -> None:
+    """Test run_commit binding raises ValueError for empty message"""
+    config = mod.CommitConfig()
+    config.message = ""
 
-    # Test double addition
-    result_double = mod.add_doubles(5.5, 3.2)
-    assert abs(result_double - 8.7) < 1e-10
+    with pytest.raises(ValueError, match="commit message must not be empty"):
+        mod.run_commit(config)
 
-    # Test generic template functions
-    result_generic_int = mod.add_generic_int(10, 20)
-    assert result_generic_int == 30
 
-    result_generic_double = mod.add_generic_double(7.7, 2.3)
-    assert abs(result_generic_double - 10.0) < 1e-10
+def test_run_fetch_succeeds() -> None:
+    """Test run_fetch binding with default remote"""
+    config = mod.FetchConfig()
+
+    mod.run_fetch(config)  # should not raise
+
+
+def test_run_fetch_rejects_empty_remote() -> None:
+    """Test run_fetch binding raises ValueError for empty remote"""
+    config = mod.FetchConfig()
+    config.remote = ""
+
+    with pytest.raises(ValueError, match="fetch remote must not be empty"):
+        mod.run_fetch(config)
+
+
+def test_run_log_succeeds_with_paths() -> None:
+    """Test run_log binding with max_count and paths"""
+    config = mod.LogConfig()
+    config.max_count = 5
+    config.paths = ["src", "tests"]
+
+    mod.run_log(config)  # should not raise
+
+
+def test_run_log_rejects_non_positive_max_count() -> None:
+    """Test run_log binding raises ValueError for non-positive max_count"""
+    config = mod.LogConfig()
+    config.max_count = 0
+
+    with pytest.raises(ValueError, match="log max_count must be positive"):
+        mod.run_log(config)

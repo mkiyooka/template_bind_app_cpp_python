@@ -23,32 +23,11 @@
             "preLaunchTask": "cmake_build"
         },
         {
-            "name": "Debug Main (Fast Class Only)",
+            "name": "Debug Main (Commit Command Only)",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/debug/debug_main",
-            "args": ["--fast-class"],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": false,
-            "osx": { "MIMode": "lldb" },
-            "linux": { "MIMode": "gdb" },
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for debugger",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": true
-                }
-            ],
-            "preLaunchTask": "cmake_build"
-        },
-        {
-            "name": "Debug Main (Simple Function Only)",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/build/debug/debug_main",
-            "args": ["--simple-function"],
+            "args": ["--commit"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],

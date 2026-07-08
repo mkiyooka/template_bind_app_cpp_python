@@ -116,6 +116,9 @@ convention = "numpy"
 "__version__.py" = ["D100"]
 "noxfile.py" = ["ANN", "D100", "D103", "D104"]
 
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["typer.Option", "typer.Argument"]
+
 [tool.ruff.lint.flake8-type-checking]
 strict = true
 

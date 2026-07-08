@@ -1,6 +1,6 @@
 # C++ テンプレートバインディングプロジェクト (nanobind)
 
-C++とPythonをnanobindでバインディングするテンプレートプロジェクトです。ハミング距離計算の高速化と汎用関数の実装例を含みます。
+C++とPythonをnanobindでバインディングするテンプレートプロジェクトです。「main関数のようなコマンド単位をPythonから呼び出す」形式を採用しており、Python側はtyperでCLIオプションを解析して設定をConfig構造体に格納し、C++側の対応する実行関数へ渡すだけの役割を担います。
 
 ## クイックスタート
 
@@ -11,7 +11,7 @@ git submodule update --init --recursive
 uv sync
 unset CC CXX  # LLVM環境がある場合はリセット
 uv pip install -e .
-python scripts/benchmark_hamming.py
+bind-demo commit --message "hello" --all
 ```
 
 ### 💡 トラブルシューティング
@@ -27,17 +27,24 @@ uv pip install -e .
 
 ## 機能
 
-### ハミング距離計算 (HammingDistanceCalculator)
+### コマンドサンプル (commit / fetch / log)
 
-- C++実装による高速ハミング距離計算
-- データ転送と計算処理の分離設計
-- Python実装との性能比較機能
+git の commit / fetch / log 相当のダミー実装です。実際のgit操作は行わず、標準出力にメッセージを出すだけのサンプルとして、コマンド単位でPythonからC++を呼び出す設計を示します。
 
-### シンプル関数 (Simple Functions)
+- `bind-demo commit --message "hello" --all` : コミットのダミー実行（`--amend`、`--all` オプション対応）
+- `bind-demo fetch --remote upstream --prune` : フェッチのダミー実行（`--remote`、`--prune` オプション対応）
+- `bind-demo log --max-count 3 --path src --path tests` : ログ表示のダミー実行（`--max-count`、複数指定可能な `--path` オプション対応）
 
-- 整数・浮動小数点数の加算関数
-- テンプレート関数の実装例
-- nanobindを用いたバインディング例
+異常系はC++側で `std::invalid_argument` 等の例外を投げ、nanobindが自動的にPython例外（`ValueError` 等）に変換します。正常系の戻り値はありません（`void`）。
+
+### 新しいコマンドの追加手順
+
+このプロジェクトはテンプレートのため、新しいコマンドを追加する際は以下の流れに従います。
+
+1. `include/commands/` に `XxxConfig` 構造体と `runXxx` 関数の宣言を追加する
+2. `src/core/commands/` に `runXxx` の実装を追加する
+3. `src/bindings/nb_bindings.cpp` に `XxxConfig` と `runXxx` のバインディングを追加する
+4. `src/template_bind_cpp_python/cli.py` にtyperのサブコマンドを追加し、オプションから `XxxConfig` を組み立てて `runXxx` を呼び出す
 
 ### クロスプラットフォーム開発環境
 
