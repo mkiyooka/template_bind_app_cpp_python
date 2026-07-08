@@ -124,7 +124,7 @@ scl enable llvm-toolset-13 bash
 
 ```bash
 git clone <repo>
-cd template_bind_cpp_python
+cd template_bind_app_cpp_python
 git submodule update --init --recursive
 uv sync
 ```

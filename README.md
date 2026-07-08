@@ -26,7 +26,7 @@ bind-demo commit --message "hello" --all
 ```bash
 # ビルド環境をリセットして再ビルド
 unset CC CXX
-rm -rf build/ .venv/lib/python*/site-packages/template_bind_cpp_python*
+rm -rf build/ .venv/lib/python*/site-packages/template_bind_app_cpp_python*
 uv pip install -e .
 ```
 
@@ -49,7 +49,7 @@ git の commit / fetch / log 相当のダミー実装です。実際のgit操作
 1. `include/commands/` に `XxxConfig` 構造体と `runXxx` 関数の宣言を追加する
 2. `src/core/commands/` に `runXxx` の実装を追加する
 3. `src/bindings/nb_bindings.cpp` に `XxxConfig` と `runXxx` のバインディングを追加する
-4. `src/template_bind_cpp_python/cli.py` にtyperのサブコマンドを追加し、オプションから `XxxConfig` を組み立てて `runXxx` を呼び出す
+4. `src/template_bind_app_cpp_python/cli.py` にtyperのサブコマンドを追加し、オプションから `XxxConfig` を組み立てて `runXxx` を呼び出す
 5. C++ CLI（`cmd`）からも呼び出す場合は、[C++ CLIアプリ](#c-cliアプリ) の手順に従って
    `include/config/config_schema.hpp` にスキーマを追加し、`src/cli/cli.cpp` にサブコマンドを追加する
 

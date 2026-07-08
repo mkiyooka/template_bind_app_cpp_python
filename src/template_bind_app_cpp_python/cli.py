@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import typer
 
-from template_bind_cpp_python import (
+from template_bind_app_cpp_python import (
     CommitConfig,  # type: ignore[attr-defined]
     FetchConfig,  # type: ignore[attr-defined]
     LogConfig,  # type: ignore[attr-defined]

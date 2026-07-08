@@ -1,5 +1,5 @@
 [project]
-name = "template-bind-cpp-python"
+name = "template-bind-app-cpp-python"
 version = "0.0.0"
 description = "Add your description here"
 readme = "README.md"
@@ -19,7 +19,7 @@ dev = [
 ]
 
 [project.scripts]
-bind-demo = "template_bind_cpp_python.cli:app"
+bind-demo = "template_bind_app_cpp_python.cli:app"
 
 [build-system]
 # cmakeと連携してビルドするにはビルドシステムとしてscikit-build-coreを指定する必要がある
@@ -123,7 +123,7 @@ extend-immutable-calls = ["typer.Option", "typer.Argument"]
 strict = true
 
 [tool.pytest.ini_options]
-pythonpath = "src/template_bind_cpp_python"
+pythonpath = "src/template_bind_app_cpp_python"
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]
 python_functions = ["test_*"]

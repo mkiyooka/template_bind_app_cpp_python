@@ -2,7 +2,7 @@
 """docstringとホバーヒント確認用スクリプト"""
 
 try:
-    import template_bind_cpp_python as lib
+    import template_bind_app_cpp_python as lib
 
     # ヘルプ表示確認
     print("=== HammingDistanceCalculator ヘルプ ===")

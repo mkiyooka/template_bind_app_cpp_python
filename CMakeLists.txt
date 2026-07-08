@@ -19,7 +19,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON) # Enable position-independent code. add 
 # Optional: LLVM toolchain override
 # Use: cmake --preset=<preset> -DCMAKE_TOOLCHAIN_FILE=toolchains/llvm-toolchain.cmake
 
-project(template_bind_cpp_python
+project(template_bind_app_cpp_python
     VERSION 0.1.0
     LANGUAGES CXX C
 )

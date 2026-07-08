@@ -3,7 +3,7 @@
 CLI(typer)で解析した設定をC++実装のコマンドへ渡すテンプレートプロジェクトです。
 
 Example:
-    >>> import template_bind_cpp_python as lib
+    >>> import template_bind_app_cpp_python as lib
     >>> config = lib.CommitConfig()
     >>> config.message = "initial commit"
     >>> lib.run_commit(config)
@@ -31,7 +31,7 @@ except ImportError:
     run_fetch = None  # type: ignore[assignment]
     run_log = None  # type: ignore[assignment]
 
-__version__ = get_version("template_bind_cpp_python")
+__version__ = get_version("template-bind-app-cpp-python")
 
 __all__ = [
     "CommitConfig",

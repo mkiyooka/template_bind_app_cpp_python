@@ -1,6 +1,6 @@
 import pytest
 
-import template_bind_cpp_python as mod  # ignore[import]
+import template_bind_app_cpp_python as mod  # ignore[import]
 
 
 def test_run_commit_succeeds() -> None:

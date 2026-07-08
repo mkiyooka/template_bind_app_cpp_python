@@ -208,11 +208,11 @@ export PROJECT_ID="123"
 
 ```bash
 # GitLab Package Registryから
-pip install template-bind-cpp-python \
+pip install template-bind-app-cpp-python \
     --index-url https://gitlab.example.com/api/v4/projects/123/packages/pypi/simple
 
 # GitLab Releasesからダウンロードしたwheelを直接
-pip install template_bind_cpp_python-0.0.0-cp310-abi3-manylinux_2_28_x86_64.whl
+pip install template_bind_app_cpp_python-0.0.0-cp310-abi3-manylinux_2_28_x86_64.whl
 ```
 
 ---
